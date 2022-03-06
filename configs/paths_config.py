@@ -13,15 +13,15 @@ dataset_paths = {
 
 	'horse_train': '',
 	'horse_test': '',
-	'lhq_256_train' : os.path.join("/datasets/RD/photo_data/LHQ_256", "train_imgs"),
-	'lhq_256_test' : os.path.join("/datasets/RD/photo_data/LHQ_256", "test_imgs"),
+
+	'lhq_256_train' : '',
+	'lhq_256_test' : '',
+	
 	'afhq_wild_train': '',
 	'afhq_wild_test': '',
 }
 
 model_paths = {
-	'stylegan_lhq': '../pretrained_models/stylegan2-lhq-config-f.pt',
-	'stylegan_lhq3' : '../pretrained_models/lhq-256-stylegan3-t-25Mimg.pt',
 	'ir_se50': '../pretrained_models/model_ir_se50.pth',
 	'resnet34': '../pretrained_models/resnet34-333f7ec4.pth',
 	'stylegan_ffhq': '../pretrained_models/stylegan2-ffhq-config-f.pt',
