@@ -7,7 +7,7 @@ from torch.nn import Conv2d, BatchNorm2d, PReLU, Sequential, Module
 
 from models.encoders.helpers import get_blocks, bottleneck_IR, bottleneck_IR_SE, _upsample_add
 from models.stylegan2.model import EqualLinear
-
+from models.stylegan3.model import FullyConnectedLayer
 
 class ProgressiveStage(Enum):
     WTraining = 0
@@ -215,7 +215,11 @@ class BackboneEncoderUsingLastLayerIntoW(Module):
                                       BatchNorm2d(64),
                                       PReLU(64))
         self.output_pool = torch.nn.AdaptiveAvgPool2d((1, 1))
-        self.linear = EqualLinear(512, 512, lr_mul=1)
+        if opts.model_type == "stylegan2": 
+            self.linear = EqualLinear(512, 512, lr_mul=1)
+        else:
+            self.linear = FullyConnectedLayer(512, 512)
+
         modules = []
         for block in blocks:
             for bottleneck in block:
@@ -223,8 +227,12 @@ class BackboneEncoderUsingLastLayerIntoW(Module):
                                            bottleneck.depth,
                                            bottleneck.stride))
         self.body = Sequential(*modules)
-        log_size = int(math.log(opts.stylegan_size, 2))
-        self.style_count = 2 * log_size - 2
+
+        if opts.model_type == "stylegan2":
+            log_size = int(math.log(opts.stylegan_size, 2))
+            self.style_count = 2 * log_size - 2
+        else:
+            self.style_count = 16
 
     def forward(self, x):
         x = self.input_layer(x)

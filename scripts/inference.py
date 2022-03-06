@@ -14,12 +14,13 @@ from datasets.inference_dataset import InferenceDataset
 from torch.utils.data import DataLoader
 from utils.model_utils import setup_model
 from utils.common import tensor2im
-from utils.alignment import align_face
+from utils.alignment import align_face 
 from PIL import Image
 
 
 def main(args):
-    net, opts = setup_model(args.ckpt, device)
+    os.makedirs(args.save_dir, exist_ok=True)
+    net, opts = setup_model(args.ckpt, args.model_type, device)
     is_cars = 'cars_' in opts.dataset_type
     generator = net.decoder
     generator.eval()
@@ -127,6 +128,7 @@ if __name__ == "__main__":
     parser.add_argument("--n_sample", type=int, default=None, help="number of the samples to infer.")
     parser.add_argument("--latents_only", action="store_true", help="infer only the latent codes of the directory")
     parser.add_argument("--align", action="store_true", help="align face images before inference")
+    parser.add_argument('--model_type', default='stylegan2', choices=['stylegan2', 'stylegan3'], type=str, help='Which stylegan model to use')
     parser.add_argument("ckpt", metavar="CHECKPOINT", help="path to generator checkpoint")
 
     args = parser.parse_args()

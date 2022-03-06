@@ -4,12 +4,13 @@ from models.psp import pSp
 from models.encoders.psp_encoders import Encoder4Editing
 
 
-def setup_model(checkpoint_path, device='cuda'):
+def setup_model(checkpoint_path, model_type='stylegan2', device='cuda'):
     ckpt = torch.load(checkpoint_path, map_location='cpu')
     opts = ckpt['opts']
 
     opts['checkpoint_path'] = checkpoint_path
     opts['device'] = device
+    opts['model_type'] = model_type
     opts = argparse.Namespace(**opts)
 
     net = pSp(opts)

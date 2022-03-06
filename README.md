@@ -1,3 +1,30 @@
+# Encoding4Editing for StyleGAN3
+
+This repo is a modification for [encoder4editing](https://github.com/omertov/encoder4editing) to train for the latest StyleGAN model, [StyleGAN3](https://github.com/NVlabs/stylegan3).  
+The codes are heavily based upon these two repos.
+Training for StyleGAN requires users to add an additional argument, 'model_type'.
+
+```
+python scripts/train.py \
+--model_type stylegan3 \
+--dataset_type cars_encode \
+--exp_dir new/experiment/directory \
+--start_from_latent_avg \
+--use_w_pool \
+--w_discriminator_lambda 0.1 \
+--progressive_start 20000 \
+--id_lambda 0.5 \
+--val_interval 10000 \
+--max_steps 200000 \
+--stylegan_size 512 \
+--stylegan_weights path/to/pretrained/stylegan.pt \
+--workers 8 \
+--batch_size 8 \
+--test_batch_size 4 \
+--test_workers 4 
+```
+
+
 # Designing an Encoder for StyleGAN Image Manipulation (SIGGRAPH 2021)
   <a href="https://arxiv.org/abs/2102.02766"><img src="https://img.shields.io/badge/arXiv-2008.00951-b31b1b.svg"></a>
   <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg"></a>

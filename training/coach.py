@@ -32,8 +32,7 @@ class Coach:
 
         self.global_step = 0
 
-        self.device = 'cuda:0'
-        self.opts.device = self.device
+        self.device = self.opts.device
         # Initialize network
         self.net = pSp(self.opts).to(self.device)
 
@@ -89,8 +88,10 @@ class Coach:
 
     def load_from_train_checkpoint(self, ckpt):
         print('Loading previous training data...')
-        self.global_step = ckpt['global_step'] + 1
-        self.best_val_loss = ckpt['best_val_loss']
+        # self.global_step = ckpt['global_step'] + 1
+        # self.best_val_loss = ckpt['best_val_loss']
+        self.global_step = 0
+        self.best_val_loss = 0.55
         self.net.load_state_dict(ckpt['state_dict'])
 
         if self.opts.keep_optimizer:
@@ -169,9 +170,10 @@ class Coach:
             agg_loss_dict.append(cur_loss_dict)
 
             # Logging related
-            self.parse_and_log_images(id_logs, x, y, y_hat,
-                                      title='images/test/faces',
-                                      subscript='{:04d}'.format(batch_idx))
+            if batch_idx % 100 == 0:
+                self.parse_and_log_images(id_logs, x, y, y_hat,
+                                        title='images/test/faces',
+                                        subscript='{:04d}'.format(batch_idx))
 
             # For first step just do sanity test on small amount of data
             if self.global_step == 0 and batch_idx >= 4:
